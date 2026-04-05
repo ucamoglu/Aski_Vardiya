@@ -1,0 +1,24 @@
+{
+  "name": "aski-vardiya-hesap",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ASKI vardiya planlama uygulamasi",
+  "main": "serve.js",
+  "bin": "serve.js",
+  "scripts": {
+    "start": "node serve.js",
+    "build:win": "pkg . --targets node18-win-x64 --output dist/aski-vardiya.exe"
+  },
+  "pkg": {
+    "assets": [
+      "index.html",
+      "app.js",
+      "logo.png",
+      "PROJE_NOTLARI.txt"
+    ],
+    "outputPath": "dist"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
+  }
+}

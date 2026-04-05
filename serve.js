@@ -16,12 +16,20 @@ const MIME_TYPES = {
 function resolvePath(urlPath) {
   const cleanPath = decodeURIComponent((urlPath || "/").split("?")[0]);
   const relativePath = cleanPath === "/" ? "index.html" : cleanPath.replace(/^\/+/, "");
-  return path.join(ROOT, relativePath);
+  const resolvedPath = path.normalize(path.join(ROOT, relativePath));
+  if (!resolvedPath.startsWith(ROOT)) return null;
+  return resolvedPath;
 }
 
 function createRequestHandler() {
   return (req, res) => {
     const filePath = resolvePath(req.url);
+    if (!filePath) {
+      res.statusCode = 403;
+      res.setHeader("Content-Type", "text/plain; charset=utf-8");
+      res.end("Forbidden");
+      return;
+    }
 
     fs.readFile(filePath, (err, data) => {
       if (err) {
@@ -78,7 +86,7 @@ async function main() {
     console.log(`Server running at http://${host}:${PORT}`);
   });
   if (!HOST) {
-    console.log(`Tarayici icin deneyebilirsin: http://localhost:${PORT}`);
+    console.log(`Tarayici icin adres: http://localhost:${PORT}`);
   }
 }
 
