@@ -417,6 +417,32 @@
       overflow-x: auto;
     }
 
+    .person-summary-table {
+      table-layout: fixed;
+    }
+
+    .person-summary-table th:nth-child(1),
+    .person-summary-table td:nth-child(1) {
+      width: 31%;
+    }
+
+    .person-summary-table th:nth-child(2),
+    .person-summary-table td:nth-child(2) {
+      width: 12%;
+    }
+
+    .person-summary-table th:nth-child(3),
+    .person-summary-table td:nth-child(3) {
+      width: 20%;
+    }
+
+    .person-summary-table th:nth-child(n + 4),
+    .person-summary-table td:nth-child(n + 4) {
+      width: 5.25%;
+      text-align: center;
+      white-space: nowrap;
+    }
+
     .export-actions {
       display: flex;
       gap: 8px;
@@ -601,26 +627,24 @@
         padding: 3px 4px;
       }
 
-      .print-summary .person-table th:nth-child(1),
-      .print-summary .person-table td:nth-child(1) {
+      .print-summary .person-summary-table th:nth-child(1),
+      .print-summary .person-summary-table td:nth-child(1) {
         width: 28%;
       }
 
-      .print-summary .person-table th:nth-child(2),
-      .print-summary .person-table td:nth-child(2) {
-        width: 16%;
+      .print-summary .person-summary-table th:nth-child(2),
+      .print-summary .person-summary-table td:nth-child(2) {
+        width: 12%;
       }
 
-      .print-summary .person-table th:nth-child(3),
-      .print-summary .person-table td:nth-child(3) {
-        width: 34%;
+      .print-summary .person-summary-table th:nth-child(3),
+      .print-summary .person-summary-table td:nth-child(3) {
+        width: 22%;
       }
 
-      .print-summary .person-table th:nth-child(4),
-      .print-summary .person-table td:nth-child(4),
-      .print-summary .person-table th:nth-child(5),
-      .print-summary .person-table td:nth-child(5) {
-        width: 11%;
+      .print-summary .person-summary-table th:nth-child(n + 4),
+      .print-summary .person-summary-table td:nth-child(n + 4) {
+        width: 5.4%;
         text-align: center;
       }
 
@@ -833,7 +857,7 @@
       </table>
       <div class="print-summary print-only">
         <h3>Kisi Bazli Calisma ve Izin Ozeti</h3>
-        <table class="person-table">
+        <table class="person-table person-summary-table">
           <thead>
             <tr>
               <th>Personel</th>
@@ -841,6 +865,10 @@
               <th>Izin Modeli</th>
               <th>CG</th>
               <th>IG</th>
+              <th>TPLM GUN</th>
+              <th>A</th>
+              <th>B</th>
+              <th>C</th>
             </tr>
           </thead>
           <tbody id="printPersonHours"></tbody>
@@ -873,7 +901,7 @@
     <section class="panel print-hide">
       <h3>Kisi Bazli Calisma ve Izin Ozeti</h3>
       <div class="hours-wrap">
-        <table class="person-table">
+        <table class="person-table person-summary-table">
           <thead>
             <tr>
               <th>Personel</th>
@@ -881,6 +909,10 @@
               <th>Izin Modeli</th>
               <th>CG</th>
               <th>IG</th>
+              <th>TPLM GUN</th>
+              <th>A</th>
+              <th>B</th>
+              <th>C</th>
             </tr>
           </thead>
           <tbody id="personHours"></tbody>

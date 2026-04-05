@@ -79,7 +79,7 @@ Onemli not:
 Mevcut kabul edilen sinirlar:
 
 Hafta ici:
-- A: min 7, max 8
+- A: min 6, max 8
 - B: min 3, max 7
 - C: 1
 

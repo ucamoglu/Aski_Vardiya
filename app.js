@@ -630,7 +630,7 @@ function appendUnique(list, items) {
 function getShiftBounds(isWeekend, dateKey) {
   const baseBounds = isWeekend
     ? { minA: 3, maxA: null, minB: 3, maxB: null }
-    : { minA: 7, maxA: 8, minB: 3, maxB: 7 };
+    : { minA: 6, maxA: 8, minB: 3, maxB: 7 };
   const override = null;
   return override ? { ...baseBounds, ...override } : baseBounds;
 }
@@ -717,6 +717,7 @@ function sortCandidates(names, side, stats, lastWorkedWeekSide, isWeekend, perso
   return uniqueNames.sort((left, right) => {
     const leftPerson = personnelMap[left];
     const rightPerson = personnelMap[right];
+
     const leftWeekendCarry = isWeekend ? getWeeklySide(weeklySideMap, weekKey, left) : null;
     const rightWeekendCarry = isWeekend ? getWeeklySide(weeklySideMap, weekKey, right) : null;
     const leftCarryPreferred = leftWeekendCarry ? leftWeekendCarry === side : false;
@@ -1147,6 +1148,13 @@ function renderAll() {
   const personHours = Object.fromEntries(allNames.map((name) => [name, 0]));
   const personOffDays = Object.fromEntries(allNames.map((name) => [name, 0]));
   const personDayStatus = Object.fromEntries(allNames.map((name) => [name, []]));
+  const personSummaryStats = Object.fromEntries(allNames.map((name) => [name, {
+    work: 0,
+    off: 0,
+    a: 0,
+    b: 0,
+    c: 0
+  }]));
   const personStats = Object.fromEntries(allNames.map((name) => [name, {
     work: 0,
     off: 0,
@@ -1604,11 +1612,20 @@ function renderAll() {
     assignedNames.forEach((name) => {
       if (personHours[name] !== undefined) personHours[name] += 8;
       if (personDayStatus[name]) personDayStatus[name].push("work");
+      if (personSummaryStats[name]) personSummaryStats[name].work += 1;
     });
     plan.offList.forEach((name) => {
       if (personOffDays[name] !== undefined) personOffDays[name] += 1;
       if (personDayStatus[name]) personDayStatus[name].push("off");
+      if (personSummaryStats[name]) personSummaryStats[name].off += 1;
     });
+    plan.aPeople.forEach((name) => {
+      if (name !== "Eksik" && personSummaryStats[name]) personSummaryStats[name].a += 1;
+    });
+    plan.bPeople.forEach((name) => {
+      if (name !== "Eksik" && personSummaryStats[name]) personSummaryStats[name].b += 1;
+    });
+    if (plan.cPerson !== "Eksik" && personSummaryStats[plan.cPerson]) personSummaryStats[plan.cPerson].c += 1;
 
     const card = document.createElement("div");
     card.className = "day";
@@ -1684,9 +1701,11 @@ function renderAll() {
   const personHoursRows = allNames.map((name) => {
     const workedDays = personHours[name] / 8;
     const offDays = personOffDays[name];
+    const totalDays = workedDays + offDays;
     const person = personnelMap[name];
     const typeLabel = person ? labelForPersonType(person.type) : "-";
     const leaveLabel = person ? labelForLeaveMode(person.leaveMode) : "-";
+    const stats = personSummaryStats[name] || { a: 0, b: 0, c: 0 };
     return [
       '<tr class="person-summary-row' + (selectedPersonName === name ? " active" : "") + '" data-person="' + name + '">',
       "<td>" + name + "</td>",
@@ -1694,6 +1713,10 @@ function renderAll() {
       "<td>" + leaveLabel + "</td>",
       "<td>" + workedDays + "</td>",
       "<td>" + offDays + "</td>",
+      "<td>" + totalDays + "</td>",
+      "<td>" + stats.a + "</td>",
+      "<td>" + stats.b + "</td>",
+      "<td>" + stats.c + "</td>",
       "</tr>"
     ].join("");
   }).join("");
