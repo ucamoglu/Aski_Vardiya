@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const { spawn } = require("child_process");
 
 const PORT = Number(process.env.PORT) || 8080;
 const HOST = process.env.HOST || "";
@@ -62,6 +63,34 @@ function startServer(host) {
   });
 }
 
+function openBrowser(url) {
+  const platform = process.platform;
+  let command = null;
+  let args = [];
+
+  if (platform === "win32") {
+    command = "cmd";
+    args = ["/c", "start", "", url];
+  } else if (platform === "darwin") {
+    command = "open";
+    args = [url];
+  } else {
+    command = "xdg-open";
+    args = [url];
+  }
+
+  const child = spawn(command, args, {
+    detached: true,
+    stdio: "ignore"
+  });
+
+  child.on("error", (err) => {
+    console.error(`Tarayici otomatik acilamadi: ${err.message}`);
+  });
+
+  child.unref();
+}
+
 async function main() {
   const hosts = HOST ? [HOST] : ["127.0.0.1", "::1"];
   const results = [];
@@ -86,7 +115,9 @@ async function main() {
     console.log(`Server running at http://${host}:${PORT}`);
   });
   if (!HOST) {
-    console.log(`Tarayici icin adres: http://localhost:${PORT}`);
+    const browserUrl = `http://localhost:${PORT}`;
+    console.log(`Tarayici icin adres: ${browserUrl}`);
+    openBrowser(browserUrl);
   }
 }
 
