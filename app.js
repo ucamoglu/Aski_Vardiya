@@ -13,8 +13,8 @@ const DEFAULT_PERSONNEL = [
   { id: "p11", gender: "K", name: "Beyhan ÇELİK", type: "normal", leaveMode: "weekend_only" },
   { id: "p12", gender: "K", name: "Habibe SARIKAYA", type: "normal", leaveMode: "weekend_only" },
   { id: "p13", gender: "E", name: "Mehmet BALCI", type: "yedek_gececi", leaveMode: "weekend_only" },
-  { id: "p14", gender: "E", name: "Serkan ÇİTE", type: "normal", leaveMode: "weekend_only" },
-  { id: "p15", gender: "E", name: "Mehmet ÜNLÜ", type: "normal", leaveMode: "weekend_only" },
+  { id: "p14", gender: "E", name: "Mehmet ÜNLÜ", type: "normal", leaveMode: "weekend_only" },
+  { id: "p15", gender: "E", name: "Serkan ÇİTE", type: "normal", leaveMode: "weekend_only" },
   { id: "p16", gender: "K", name: "Tuğba KARACA", type: "normal", leaveMode: "weekend_only" }
 ];
 
@@ -241,7 +241,7 @@ function loadState() {
         month: safe.month,
         personnel: swapPersonnelNames(swapPersonnelNames(swapPersonnelNames(swapPersonnelNames(personnel, "p3", "p9"), "p6", "p10"), "p14", "p15"), "p11", "p12").map((person) => ({
           ...person,
-          name: person.id === "p3" || person.id === "p9" || person.id === "p6" || person.id === "p10" || person.id === "p14" || person.id === "p15" || person.id === "p11" || person.id === "p12"
+          name: person.id === "p3" || person.id === "p9" || person.id === "p6" || person.id === "p10" || person.id === "p11" || person.id === "p12"
             ? (DEFAULT_PERSONNEL_BY_ID[person.id]?.name || person.name)
             : (
               shouldReplaceStoredName(person.name, DEFAULT_PERSONNEL_BY_ID[person.id]?.name || person.name)
